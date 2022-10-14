@@ -9,6 +9,7 @@ on:
   
 env: 
   DOTNET_VERSION: '6.0.x'
+  AZURE_WEBAPP_NAME: test-github-action-workflow
     
 jobs:
   build:
@@ -27,4 +28,14 @@ jobs:
 
       - name: build app
         run: dotnet build -c Release --no-restore
+
+      - name: publish app
+        run: dotnet publish -c Release -o ./publish
+
+      - name: Deploy the app
+        uses: azure/webapp-deploy@v2
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}                                                                                                                                                                                       `` }}
+          publish-profile: ${{ secret.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: ./publish
 
